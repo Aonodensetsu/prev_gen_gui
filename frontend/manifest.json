@@ -9,7 +9,7 @@
   "dir": "ltr",
   "theme_color": "#B16286",
   "background_color": "#B16286",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "landscape",
   "icons": [
     {
