@@ -10,7 +10,7 @@ server {
   include snippets/long.ssl;
   include snippets/control;
 
-  limit_req zone=prevgen burst=30 nodelay;
+  limit_req zone=prevgen burst=50 nodelay;
 }
 
 # prev-gen-gui-short
