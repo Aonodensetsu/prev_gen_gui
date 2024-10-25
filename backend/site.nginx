@@ -19,7 +19,7 @@ server {
   listen 443 quic;
   server_name p.00t.in;
   include snippets/short.ssl;
-
+  limit_req zone=prevgen burst=50 nodelay;
   return 302 https://prevgen.aonodensetsu.me$request_uri;
 }
 
