@@ -80,8 +80,10 @@ export class Tile {
       n.updateText();
       this.el.addChild(n);
       // hex under name
-      const hc = this.settings.hex_upper ? this.color.hex.toUpperCase() : this.color.hexi.toLowerCase();
-      const h = new PIXI.Text(this.settings.show_hash ? hc : hc.replace('#', ''), {
+      let hc = this.color.hex.replace('#', '').padStart(6, '0');
+      hc = this.settings.hex_upper ? hc.toUpperCase() : hc.toLowerCase();
+      if (this.settings.show_hash) hc = '#' + hc;
+      const h = new PIXI.Text(hc, {
         fontFamily: 'Nunito',
         fontSize: this.settings.hex_size,
         fontWeight: 500,
@@ -95,7 +97,9 @@ export class Tile {
       this.el.addChild(h);
     } else {
       // hex with no name
-      const hc = this.settings.hex_upper ? this.color.hex.toUpperCase() : this.color.hex.lowerCase();
+      let hc = this.color.hex.replace('#', '').padStart(6, '0');
+      hc = this.settings.hex_upper ? hc.toUpperCase() : hc.toLowerCase();
+      if (this.settings.show_hash) hc = '#' + hc;
       const h = new PIXI.Text(this.settings.show_hash ? hc : hc.replace('#', ''), {
         fontFamily: 'Nunito',
         fontSize: this.settings.hex_size_nameless,
@@ -142,9 +146,10 @@ export class Tile {
   }
 
   click() {
+    const hc = this.color ? '#' + this.color.hex.replace('#', '').padStart(6, '0') : '';
     const form = document.querySelector('#editmenu');
     form.cause.value = this.row + ',' + this.column;
-    form.hex.value = this.color?.hex || '';
+    form.hex.value = hc;
     form.name.value = this.name;
     form.desc_left.value = this.desc_left;
     form.desc_right.value = this.desc_right;
