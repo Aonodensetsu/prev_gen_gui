@@ -1,6 +1,10 @@
 import { Settings } from './settings.js';
-import { EmptyTile, Tile } from './tile.js';
+import { Tile } from './tile.js';
+import { Color } from './color.js';
+
 export class Palette {
+  static _minus;
+  static _plus;
   colPlus;
   colMinus;
   rowPlus;
@@ -49,9 +53,28 @@ export class Palette {
     this.rowMinus.on('pointerdown', this.deleteColumn.bind(this));
     viewport.addChild(this.rowMinus);
 
-    this.empty({column: 0, row: 0});
+    this.fill({row: 0, column: 0});
 
     this.moveHandles();
+
+    document.querySelector('#editmenu').addEventListener('submit', this.editTile.bind(this));
+  }
+
+  editTile(e) {
+    e.preventDefault();
+    if (e.submitter.value === 'cancel') {
+      e.target.hidePopover();
+      return;
+    }
+    const pos = e.target.cause.value.split(',').map(i => parseInt(i));
+    if (e.submitter.value === 'clear') {
+      this.tiles[pos[0]][pos[1]].update(null, {name: '', desc_left: '', desc_right: ''});
+    }
+    else if (e.submitter.value === 'edit') {
+      const col = e.target.hex.value ? Color.fromHex(e.target.hex.value) : null;
+      this.tiles[pos[0]][pos[1]].update(col, {name: e.target.name.value, desc_left: e.target.desc_left.value, desc_right: e.target.desc_right.value});
+    }
+    e.target.hidePopover();
   }
 
   moveHandles() {
@@ -62,10 +85,10 @@ export class Palette {
   }
 
   addColumn() {
-    this.tiles.forEach((row, i) => {
-      this.empty({row: i, column: this.columns});
-    });
     this.columns += 1;
+    this.tiles.forEach((row, i) => {
+      this.fill({row: i, column: this.columns - 1});
+    });
     this.moveHandles();
   }
 
@@ -77,10 +100,10 @@ export class Palette {
   }
 
   addRow() {
-    this.rows += 1;
     this.tiles.push([]);
+    this.rows += 1;
     for (let i = 0; i < this.columns; i++) {
-      this.empty({row: this.rows - 1, column: i});
+      this.fill({row: this.rows - 1, column: i});
     }
     this.moveHandles();
   }
@@ -92,16 +115,11 @@ export class Palette {
     this.moveHandles();
   }
 
-  empty({column, row}) {
-    this.tiles[row][column]?.undraw();
-    this.tiles[row][column] = new EmptyTile({app: this.app, viewport: this.viewport, settings: this.settings}).draw({row, column});
-  }
-
-  fill({column, row}, color, {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}) {
+  fill({row, column}, color = null, {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}) {
     while (this.columns <= column) this.addColumn();
     while (this.rows <= row) this.addRow();
-    this.tiles[row][column].undraw();
-    this.tiles[row][column] = new Tile({app: this.app, viewport: this.viewport, settings: this.settings}, color, {name, desc_left, desc_right}).draw({row, column});
+    if (this.tiles[row][column]) this.tiles[row][column].update(color, {name, desc_left, desc_right});
+    else this.tiles[row][column] = new Tile({app: this.app, viewport: this.viewport, settings: this.settings}, color, {name, desc_left, desc_right}).draw({row, column});
   }
 }
 

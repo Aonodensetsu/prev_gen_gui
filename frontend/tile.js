@@ -1,13 +1,30 @@
-export class EmptyTile {
+export class Tile {
+  static _emptyTex;
+  row;
+  column;
   el;
+  app;
+  viewport;
+  settings;
+  color;
+  name;
+  desc_left;
+  desc_right;
 
-  constructor({app, viewport, settings}) {
+  constructor(
+    {app, viewport, settings},
+    color = null,
+    {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}
+  ) {
     this.app = app;
     this.viewport = viewport;
     this.settings = settings;
+    this.color = color;
+    this.name = name;
+    this.desc_left = desc_left;
+    this.desc_right = desc_right;
 
-    // static texture since it's the same for all empty tiles
-    if (!EmptyTile._tex) {
+    if (!Tile._emptyTex) {
       const g = new PIXI.Graphics();
       g.lineStyle({
         width: 2,
@@ -19,43 +36,24 @@ export class EmptyTile {
       g.lineTo(0, -1);
       g.moveTo(0, 0);
       g.lineTo(this.settings.grid_width - 1, this.settings.grid_height - 3);
-      EmptyTile._tex = this.app.renderer.generateTexture(g);
+      Tile._emptyTex = this.app.renderer.generateTexture(g);
     }
   }
 
-  draw({row, column}) {
-    const s = new PIXI.Sprite(EmptyTile._tex);
-    s.position.set(column * this.settings.grid_width, row * this.settings.grid_height);
-    this.viewport.addChild(s);
-    this.el = s;
-    return this;
-  }
-
-  undraw() {
-    this.viewport.removeChild(this.el);
-    this.el = null;
-    return this;
-  }
-}
-
-export class Tile {
-  el;
-
-  constructor(
-    {app, viewport, settings},
-    color,
-    {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}
-  ) {
-    this.app = app;
-    this.viewport = viewport;
-    this.settings = settings;
+  update(color = null, {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}) {
+    // set new variables
     this.color = color;
     this.name = name;
     this.desc_left = desc_left;
     this.desc_right = desc_right;
-  }
-
-  draw({row, column}) {
+    // clean previous draw
+    while (this.el.children[0]) this.el.removeChild(this.el.children[0]);
+    // empty tile case
+    if (!this.color) {
+      this.el.texture = Tile._emptyTex;
+      return this;
+    }
+    // filled tile case
     const g = new PIXI.Graphics();
     // main bg
     g.beginFill(this.color.hexNum);
@@ -65,7 +63,7 @@ export class Tile {
     g.drawRect(0, this.settings.grid_height - 10, this.settings.grid_width, this.settings.bar_height);
     g.endFill();
     const t = this.app.renderer.generateTexture(g);
-    const s = new PIXI.Sprite(t);
+    this.el.texture = t;
     // name
     if (this.name) {
       // name itself
@@ -80,7 +78,7 @@ export class Tile {
       n.x = this.settings.grid_width / 2;
       n.y = this.settings.grid_height / 2 + this.settings.name_offset;
       n.updateText();
-      s.addChild(n);
+      this.el.addChild(n);
       // hex under name
       const hc = this.settings.hex_upper ? this.color.hex.toUpperCase() : this.color.hexi.toLowerCase();
       const h = new PIXI.Text(this.settings.show_hash ? hc : hc.replace('#', ''), {
@@ -94,7 +92,7 @@ export class Tile {
       h.x = this.settings.grid_width / 2;
       h.y = this.settings.grid_height / 2 + this.settings.hex_offset;
       h.updateText();
-      s.addChild(h);
+      this.el.addChild(h);
     } else {
       // hex with no name
       const hc = this.settings.hex_upper ? this.color.hex.toUpperCase() : this.color.hex.lowerCase();
@@ -109,7 +107,7 @@ export class Tile {
       h.x = this.settings.grid_width / 2;
       h.y = this.settings.grid_height / 2 + this.settings.hex_offset_nameless;
       h.updateText();
-      s.addChild(h);
+      this.el.addChild(h);
     }
     // description right
     if (this.desc_right) {
@@ -124,7 +122,7 @@ export class Tile {
       r.x = this.settings.grid_width - this.settings.desc_offset_x;
       r.y = this.settings.desc_offset_y;
       r.updateText();
-      s.addChild(r);
+      this.el.addChild(r);
     }
     // description left
     if (this.desc_left) {
@@ -135,21 +133,42 @@ export class Tile {
         fill: this.color.textColor.hexNum,
         align: 'center'
       });
-      //r.anchor.set(1, 0);
       r.x = this.settings.desc_offset_x;
       r.y = this.settings.desc_offset_y;
       r.updateText();
-      s.addChild(r);
+      this.el.addChild(r);
     }
+    return this;
+  }
+
+  click() {
+    const form = document.querySelector('#editmenu');
+    form.cause.value = this.row + ',' + this.column;
+    form.hex.value = this.color?.hex || '';
+    form.name.value = this.name;
+    form.desc_left.value = this.desc_left;
+    form.desc_right.value = this.desc_right;
+    form.showPopover();
+  }
+
+  draw({row, column}) {
+    const s = new PIXI.Sprite();
     s.position.set(column * this.settings.grid_width, row * this.settings.grid_height);
-    this.viewport.addChild(s);
+    s.interactive = true;
+    s.on('pointerup', this.click.bind(this));
+    this.row = row;
+    this.column = column;
     this.el = s;
+    this.viewport.addChild(s);
+    this.update();
     return this;
   }
 
   undraw() {
     this.viewport.removeChild(this.el);
     this.el = null;
+    this.row = null;
+    this.column = null;
     return this;
   }
 }

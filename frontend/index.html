@@ -28,6 +28,20 @@
     <title>Palette Preview Generator</title>
   </head>
   <body>
+    <form popover=manual id=editmenu>
+      <label for=hex>Hex</label>:
+      <input type=text name=hex placeholder=hex><br>
+      <label for=name>Name</label>:
+      <input type=text name=name placeholder=name><br>
+      <label for=desc_left>Description Left</label>:
+      <input type=text name=desc_left placeholder=desc_left><br>
+      <label for=desc_right>Description Right</label>:
+      <input type=text name=desc_right placeholder=desc_right><br>
+      <input type=submit value=edit>
+      <input type=submit value=clear>
+      <input type=submit value=cancel>
+      <input hidden name=cause value='0,0'>
+    </form>
   </body>
 </html>
 

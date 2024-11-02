@@ -1,4 +1,4 @@
-// PIXI, pixi-unsafeeval, pixi-viewport are imported in HTML
+// PIXI, pixi-unsafeeval, pixi_viewport are imported in HTML
 import { Settings } from './settings.js';
 import { Color } from './color.js';
 import { Tile } from './tile.js';
@@ -33,6 +33,10 @@ viewport
 // add a 5% default padding
 viewport.moveCorner(-0.05 * window.innerWidth, -0.05 * window.innerHeight);
 
+// load font manually before drawing the palette in case it's not loaded yet
+await (new FontFace('Nunito', 'url(nunito.woff2)')).load().then(font => {
+  document.fonts.add(font);
+});
 
 const p = new Palette({app, viewport});
 
