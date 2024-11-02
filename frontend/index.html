@@ -28,7 +28,7 @@
     <title>Palette Preview Generator</title>
   </head>
   <body>
-    <form popover=manual id=editmenu>
+    <form popover=manual id=edittile>
       <label for=hex>Hex</label>:
       <input type=text name=hex placeholder=hex><br>
       <label for=name>Name</label>:
@@ -41,6 +41,38 @@
       <input type=submit value=clear>
       <input type=submit value=cancel>
       <input hidden name=cause value='0,0'>
+    </form>
+    <form popover=manual id=editsettings>
+      <label for=grid_height>Grid Height</label>:
+      <input type=number name=grid_height placeholder=grid_height><br>
+      <label for=grid_width>Grid Width</label>:
+      <input type=number name=grid_width placeholder=grid_width><br>
+      <label for=bar_height>Bar Height</label>:
+      <input type=number name=bar_height placeholder=bar_height><br>
+      <label for=name_offset>Name Offset</label>:
+      <input type=number name=name_offset placeholder=name_offset><br>
+      <label for=hex_offset>Hex Offset</label>:
+      <input type=number name=hex_offset placeholder=hex_offset><br>
+      <label for=hex_offset_nameless>Hex Offset Nameless</label>:
+      <input type=number name=hex_offset_nameless placeholder=hex_offset_nameless><br>
+      <label for=desc_offset_x>Description Offset X</label>:
+      <input type=number name=desc_offset_x placeholder=desc_offset_x><br>
+      <label for=desc_offset_y>Description Offset Y</label>:
+      <input type=number name=desc_offset_y placeholder=desc_offset_y><br>
+      <label for=name_size>Name Size</label>:
+      <input type=number name=name_size placeholder=name_size><br>
+      <label for=hex_size>Hex Size</label>:
+      <input type=number name=hex_size placeholder=hex_size><br>
+      <label for=hex_size_nameless>Hex Size Nameless</label>:
+      <input type=number name=hex_size_nameless placeholder=hex_size_nameless><br>
+      <label for=desc_size>Description Size</label>:
+      <input type=number name=desc_size placeholder=desc_size><br>
+      <label for=show_hash>Show Hash</label>:
+      <input type=checkbox name=show_hash><br>
+      <label for=hex_upper>Hex Upper</label>:
+      <input type=checkbox name=hex_upper><br>
+      <input type=submit value=edit>
+      <input type=submit value=cancel>
     </form>
   </body>
 </html>

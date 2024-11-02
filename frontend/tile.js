@@ -1,8 +1,8 @@
 export class Tile {
   static _emptyTex;
+  el;
   row;
   column;
-  el;
   app;
   viewport;
   settings;
@@ -24,20 +24,32 @@ export class Tile {
     this.desc_left = desc_left;
     this.desc_right = desc_right;
 
-    if (!Tile._emptyTex) {
-      const g = new PIXI.Graphics();
-      g.lineStyle({
-        width: 2,
-        color: 0x333333
-      });
-      g.lineTo(this.settings.grid_width - 2, 0);
-      g.lineTo(this.settings.grid_width - 2, this.settings.grid_height - 3);
-      g.lineTo(0, this.settings.grid_height - 3);
-      g.lineTo(0, -1);
-      g.moveTo(0, 0);
-      g.lineTo(this.settings.grid_width - 1, this.settings.grid_height - 3);
-      Tile._emptyTex = this.app.renderer.generateTexture(g);
+    this.redrawStatic();
+  }
+
+  redrawStatic() {
+    const g = new PIXI.Graphics();
+    g.lineStyle({
+      width: 2,
+      color: 0x333333
+    });
+    g.lineTo(this.settings.grid_width - 2, 0);
+    g.lineTo(this.settings.grid_width - 2, this.settings.grid_height - 3);
+    g.lineTo(0, this.settings.grid_height - 3);
+    g.lineTo(0, -1);
+    g.moveTo(0, 0);
+    g.lineTo(this.settings.grid_width - 1, this.settings.grid_height - 3);
+    Tile._emptyTex = this.app.renderer.generateTexture(g);
+    return this;
+  }
+
+  redraw() {
+    if (this.settings.grid_width != Tile._emptyTex.width || this.settings.grid_height != Tile._emptyTex.height) {
+      this.redrawStatic();
     }
+    this.el.position.set(this.column * this.settings.grid_width, this.row * this.settings.grid_height);
+    this.update(this.color, {name: this.name, desc_left: this.desc_left, desc_right: this.desc_right});
+    return this;
   }
 
   update(color = null, {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}) {
@@ -60,7 +72,7 @@ export class Tile {
     g.drawRect(0, 0, this.settings.grid_width, this.settings.grid_height - this.settings.bar_height);
     // darker bar
     g.beginFill(this.color.barColor.hexNum);
-    g.drawRect(0, this.settings.grid_height - 10, this.settings.grid_width, this.settings.bar_height);
+    g.drawRect(0, this.settings.grid_height - this.settings.bar_height, this.settings.grid_width, this.settings.bar_height);
     g.endFill();
     const t = this.app.renderer.generateTexture(g);
     this.el.texture = t;
@@ -146,24 +158,21 @@ export class Tile {
   }
 
   click() {
-    const hc = this.color ? '#' + this.color.hex.replace('#', '').padStart(6, '0') : '';
-    const form = document.querySelector('#editmenu');
-    form.cause.value = this.row + ',' + this.column;
-    form.hex.value = hc;
+    const form = document.querySelector('#edittile');
+    form.hex.value = this.color ? '#' + this.color.hex.replace('#', '').padStart(6, '0') : '';
     form.name.value = this.name;
     form.desc_left.value = this.desc_left;
     form.desc_right.value = this.desc_right;
     form.showPopover();
+    return this;
   }
 
   draw({row, column}) {
     const s = new PIXI.Sprite();
     s.position.set(column * this.settings.grid_width, row * this.settings.grid_height);
-    s.interactive = true;
-    s.on('pointerup', this.click.bind(this));
+    this.el = s;
     this.row = row;
     this.column = column;
-    this.el = s;
     this.viewport.addChild(s);
     this.update();
     return this;

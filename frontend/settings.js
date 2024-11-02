@@ -7,7 +7,7 @@ export class Settings {
     hex_offset = 35,
     hex_offset_nameless = 0,
     desc_offset_x = 15,
-    desc_offset_y = 20,
+    desc_offset_y = 15,
     name_size = 40,
     hex_size = 26,
     hex_size_nameless = 34,
