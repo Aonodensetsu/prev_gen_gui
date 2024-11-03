@@ -158,11 +158,12 @@ export class Tile {
   }
 
   click() {
+    function t(e) { return e.parentElement.MDCTextField; }
     const form = document.querySelector('#edittile');
-    form.hex.value = this.color ? '#' + this.color.hex.replace('#', '').padStart(6, '0') : '';
-    form.name.value = this.name;
-    form.desc_left.value = this.desc_left;
-    form.desc_right.value = this.desc_right;
+    t(form.hex).value = this.color ? this.color.hex.replace('#', '').padStart(6, '0') : '';
+    t(form.name).value = this.name;
+    t(form.desc_left).value = this.desc_left;
+    t(form.desc_right).value = this.desc_right;
     form.showPopover();
     return this;
   }

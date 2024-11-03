@@ -17,3 +17,47 @@ canvas {
   margin: 0;
 }
 
+.smol {
+  width: fit-content;
+  height: fit-content;
+}
+
+#editsettings, #edittile {
+  display: none;
+  width: fit-content;
+  border-radius: 4px;
+  border: 1px rgba(0, 0, 0, 0.6) solid;
+  padding: 6px;
+  justify-items: center;
+  gap: 0.5em;
+}
+
+#editsettings:popover-open, #edittile:popover-open {
+  display: grid;
+}
+
+#editsettings {
+  grid-template-rows: auto 1fr 1fr;
+}
+
+#edittile {
+  grid-template-rows: auto 1fr;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.5em;
+}
+
+.tonal * {
+  --mdc-theme-primary: #be9ef8;
+  --mdc-theme-on-primary: #000;
+}
+
+@media screen and (min-width: 846px) {
+  .values-settings {
+    grid-template-columns: auto auto auto;
+  }
+}
+

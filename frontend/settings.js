@@ -1,4 +1,6 @@
 export class Settings {
+  anim_time = 0.1;
+
   constructor(
     grid_height = 168,
     grid_width = 224,
