@@ -28,32 +28,39 @@ export class Palette {
     if (Palette._self) return Palette._self;
     Palette._self = this;
 
+    const tint = window.matchMedia('(prefers-color-scheme: dark)') ? 0x49454f : 0xe7e0ec;
+
     this.app = app;
     this.viewport = viewport;
     this.settings = settings;
 
     if (!Palette._plus) Palette._plus = PIXI.Texture.from('plus.png');
     this.colPlus = new PIXI.Sprite(Palette._plus);
+    this.colPlus.tint = tint;
     this.colPlus.interactive = true;
     this.colPlus.on('pointerdown', this.addColumn.bind(this));
     viewport.addChild(this.colPlus);
     this.rowPlus = new PIXI.Sprite(Palette._plus);
+    this.rowPlus.tint = tint;
     this.rowPlus.interactive = true;
     this.rowPlus.on('pointerdown', this.addRow.bind(this));
     viewport.addChild(this.rowPlus);
 
     if (!Palette._minus) Palette._minus = PIXI.Texture.from('minus.png');
     this.colMinus = new PIXI.Sprite(Palette._minus);
+    this.colMinus.tint = tint;
     this.colMinus.interactive = true;
     this.colMinus.on('pointerdown', this.deleteColumn.bind(this));
     viewport.addChild(this.colMinus);
     this.rowMinus = new PIXI.Sprite(Palette._minus);
+    this.rowMinus.tint = tint;
     this.rowMinus.interactive = true;
     this.rowMinus.on('pointerdown', this.deleteRow.bind(this));
     viewport.addChild(this.rowMinus);
 
     if (!Palette._settings) Palette._settings = PIXI.Texture.from('settings.png');
     this.settingsBtn = new PIXI.Sprite(Palette._settings);
+    this.settingsBtn.tint = tint;
     this.settingsBtn.interactive = true;
     this.settingsBtn.on('pointerdown', this.clickSettings.bind(this));
     this.settingsBtn.anchor.set(0, 1);
@@ -62,6 +69,7 @@ export class Palette {
 
     if (!Palette._trash) Palette._trash = PIXI.Texture.from('trash.png');
     this.trashBtn = new PIXI.Sprite(Palette._trash);
+    this.trashBtn.tint = tint;
     this.trashBtn.interactive = true;
     this.trashBtn.on('pointerdown', this.empty.bind(this));
     this.trashBtn.anchor.set(0, 1);
@@ -70,6 +78,7 @@ export class Palette {
 
     if (!Palette._reset) Palette._reset = PIXI.Texture.from('reset.png');
     this.resetBtn = new PIXI.Sprite(Palette._reset);
+    this.resetBtn.tint = tint;
     this.resetBtn.interactive = true;
     this.resetBtn.on('pointerdown', this.defaultTiles.bind(this));
     this.resetBtn.anchor.set(0, 1);

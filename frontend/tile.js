@@ -31,7 +31,7 @@ export class Tile {
     const g = new PIXI.Graphics();
     g.lineStyle({
       width: 2,
-      color: 0x333333
+      color: window.matchMedia('(prefers-color-scheme: dark)') ? 0x49454f : 0xe7e0ec
     });
     g.lineTo(this.settings.grid_width - 2, 0);
     g.lineTo(this.settings.grid_width - 2, this.settings.grid_height - 3);

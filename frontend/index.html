@@ -32,6 +32,7 @@
   </head>
   <body>
     <form popover=manual id=edittile>
+      <input hidden name=cause>
       <div class='smol values'>
         <label data-mdc-auto-init=MDCTextField class='mdc-text-field mdc-text-field--outlined'>
           <span class=mdc-notched-outline>
@@ -98,7 +99,6 @@
           </button>
         </div>
       </div>
-      <input hidden name=cause>
     </form>
     <form popover=manual id=editsettings>
       <div class='smol values values-settings'>
@@ -235,7 +235,7 @@
           <span class='mdc-text-field__affix mdc-text-field__affix--suffix'>px</span>
         </label>
       </div>
-      <div class=smol>
+      <div>
         <div class=smol>
           <label for=show_hash>Show Hash</label>
           <button data-mdc-auto-init=MDCSwitch id=show_hash class='mdc-switch mdc-switch--unselected' type=button role=switch aria-checked=false>
@@ -286,8 +286,6 @@
             </span>
           </button>
         </div>
-      </div>
-      <div class=smol>
         <div class='smol mdc-touch-target-wrapper'>
           <button type=submit value=edit class='mdc-button mdc-button--raised'>
             <span class=mdc-button__ripple></span>

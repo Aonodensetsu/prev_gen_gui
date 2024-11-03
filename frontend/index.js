@@ -10,7 +10,7 @@ mdc.autoInit();
 
 // Pixi - 2D application canvas
 const app = new PIXI.Application({
-  background: '#222',
+  background: window.matchMedia('(prefers-color-scheme: dark)') ? '#141218' : '#fef7ff',
   resizeTo: window,
   autoStart: true
 });
@@ -52,4 +52,11 @@ const p = new Palette({app, viewport});
 viewport.on('clicked', e => {
   p.click(e.world);
 });
+
+// update viewport on load and on mobile devices
+screen.orientation.addEventListener('change', e => {
+  viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
+});
+
+viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
 
