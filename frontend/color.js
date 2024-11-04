@@ -30,6 +30,10 @@ export class Color {
     });
   }
 
+  static fromVar(val) {
+    return Color.fromHex(getComputedStyle(document.body).getPropertyValue(val));
+  }
+
   // static fromRGB
   constructor({r, g, b}) {
     this.r = Math.round(Color.clamp(r, 0, 255));

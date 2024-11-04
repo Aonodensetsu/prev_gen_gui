@@ -28,7 +28,7 @@ export class Palette {
     if (Palette._self) return Palette._self;
     Palette._self = this;
 
-    const tint = window.matchMedia('(prefers-color-scheme: dark)') ? 0x49454f : 0xe7e0ec;
+    const tint = Color.fromVar('--mdc-button-on-surface').hexNum;
 
     this.app = app;
     this.viewport = viewport;

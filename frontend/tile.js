@@ -1,3 +1,5 @@
+import { Color } from './color.js';
+
 export class Tile {
   static _emptyTex;
   el;
@@ -31,7 +33,7 @@ export class Tile {
     const g = new PIXI.Graphics();
     g.lineStyle({
       width: 2,
-      color: window.matchMedia('(prefers-color-scheme: dark)') ? 0x49454f : 0xe7e0ec
+      color: Color.fromVar('--mdc-button-on-surface').hexNum
     });
     g.lineTo(this.settings.grid_width - 2, 0);
     g.lineTo(this.settings.grid_width - 2, this.settings.grid_height - 3);

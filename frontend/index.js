@@ -10,7 +10,7 @@ mdc.autoInit();
 
 // Pixi - 2D application canvas
 const app = new PIXI.Application({
-  background: window.matchMedia('(prefers-color-scheme: dark)') ? '#141218' : '#fef7ff',
+  background: Color.fromVar('--mdc-theme-surface').hexNum,
   resizeTo: window,
   autoStart: true
 });
