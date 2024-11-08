@@ -122,6 +122,7 @@ export class Palette {
     s(form.show_hash).selected = this.settings.show_hash;
     s(form.hex_upper).selected = this.settings.hex_upper;
     form.showPopover();
+    this.viewport.pause = true;
     return this;
   }
 
@@ -129,6 +130,7 @@ export class Palette {
     e.preventDefault();
     if (e.submitter.value === 'cancel') {
       e.target.hidePopover();
+      this.viewport.pause = false;
       return;
     }
     const pos = e.target.cause.value.split(',').map(i => parseInt(i));
@@ -140,6 +142,7 @@ export class Palette {
       this.tiles[pos[0]][pos[1]].update(col, {name: e.target.name.value, desc_left: e.target.desc_left.value, desc_right: e.target.desc_right.value});
     }
     e.target.hidePopover();
+    this.viewport.pause = false;
     return this;
   }
 
@@ -147,6 +150,7 @@ export class Palette {
     e.preventDefault();
     if (e.submitter.value === 'cancel') {
       e.target.hidePopover();
+      this.viewport.pause = false;
       return;
     }
     const form = e.target;
@@ -166,6 +170,7 @@ export class Palette {
     this.settings.hex_upper = form.hex_upper.MDCSwitch.selected;
     this.redraw();
     form.hidePopover();
+    this.viewport.pause = false;
     return this;
   }
 

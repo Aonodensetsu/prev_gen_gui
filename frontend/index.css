@@ -58,7 +58,7 @@ input[type=number] {
 }
 
 label {
-  width: 9em;
+  width: 10em;
 }
 
 .smol {
@@ -67,8 +67,10 @@ label {
 }
 
 #editsettings, #edittile {
+  max-height: 100vh;
   display: none;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: inherit;
   color: inherit;
   width: fit-content;
@@ -84,20 +86,29 @@ label {
   display: grid;
 }
 
-#editsettings > :last-child, #edittile > :last-child {
-  display: flex;
-  gap: 1em;
+.settings-last, .tile-last {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 0.2em 1em;
   align-items: center;
+}
+
+.settings-last-inner, .tile-last-inner {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto;
+  gap: 0.2em 1em;
+  justify-content: center;
+}
+
+.centerme {
+  margin: 0 auto;
 }
 
 .values {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto;
   gap: 0.5em;
-}
-
-.values-settings {
-  grid-template-columns: auto auto auto;
 }
 
 .tonal * {
@@ -105,7 +116,28 @@ label {
   --mdc-theme-on-primary: var(--mdc-theme-on-secondary);
 }
 
-@media (min-width: 676px), (min-height: 676px) {
+@media (min-width: 383px) {
+  .settings-last, .tile-last {
+    grid-template-columns: auto auto;
+  }
+  .tile-last-inner {
+    grid-template-columns: auto auto;
+  }
+  .values {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media (min-width: 572px) {
+  .settings-last-inner {
+    grid-template-columns: auto auto;
+  }
+  .values-settings {
+    grid-template-columns: auto auto auto;
+  }
+}
+
+@media (min-width: 761px) {
   .values-settings {
     grid-template-columns: auto auto auto auto;
   }
@@ -124,7 +156,7 @@ label {
   color: var(--mdc-theme-on-surface) !important;
 }
 
-.mdc-text-field__affix--suffix {
-  color: var(--mdc-theme-on-surface) !important;
+.mdc-text-field__affix--prefix, .mdc-text-field__affix--suffix {
+  color: var(--mdc-theme-secondary) !important;
 }
 

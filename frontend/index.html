@@ -76,20 +76,22 @@
           <input type=text class=mdc-text-field__input aria-labelledby=desc_right_label name=desc_right>
         </label>
       </div>
-      <div class=smol>
-        <div class='smol mdc-touch-target-wrapper'>
-          <button type=submit value=edit class='mdc-button mdc-button--raised'>
-            <span class=mdc-button__ripple></span>
-            <span class=mdc-button__focus-ring></span>
-            <span class=mdc-button__label>Edit</span>
-          </button>
-        </div>
-        <div class='smol tonal mdc-touch-target-wrapper'>
-          <button type=submit value=clear class='mdc-button mdc-button--raised'>
-            <span class=mdc-button__ripple></span>
-            <span class=mdc-button__focus-ring></span>
-            <span class=mdc-button__label>Clear</span>
-          </button>
+      <div class='smol tile-last'>
+        <div class='smol tile-last-inner'>
+          <div class='smol centerme mdc-touch-target-wrapper'>
+            <button type=submit value=edit class='mdc-button mdc-button--raised'>
+              <span class=mdc-button__ripple></span>
+              <span class=mdc-button__focus-ring></span>
+              <span class=mdc-button__label>Edit</span>
+            </button>
+          </div>
+          <div class='smol tonal mdc-touch-target-wrapper'>
+            <button type=submit value=clear class='mdc-button mdc-button--raised'>
+              <span class=mdc-button__ripple></span>
+              <span class=mdc-button__focus-ring></span>
+              <span class=mdc-button__label>Clear</span>
+            </button>
+          </div>
         </div>
         <div class='smol mdc-touch-target-wrapper'>
           <button type=submit value=cancel class='mdc-button mdc-button--outlined'>
@@ -235,70 +237,74 @@
           <span class='mdc-text-field__affix mdc-text-field__affix--suffix'>px</span>
         </label>
       </div>
-      <div>
-        <div class=smol>
-          <label for=show_hash>Show Hash</label>
-          <button data-mdc-auto-init=MDCSwitch id=show_hash class='mdc-switch mdc-switch--unselected' type=button role=switch aria-checked=false>
-            <div class=mdc-switch__track></div>
-            <div class=mdc-switch__handle-track>
-              <div class=mdc-switch__handle>
-                <div class=mdc-switch__shadow>
-                  <div class=mdc-elevation-overlay></div>
-                </div>
-                <div class=mdc-switch__ripple></div>
-                <div class=mdc-switch__icons>
-                  <svg class='mdc-switch__icon mdc-switch__icon--on' viewBox='0 0 24 24'>
-                    <path d='M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z' />
-                  </svg>
-                  <svg class='mdc-switch__icon mdc-switch__icon--off' viewBox='0 0 24 24'>
-                    <path d='M20 13H4v-2h16v2z' />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <span class=mdc-switch__focus-ring-wrapper>
-              <div class=mdc-switch__focus-ring></div>
-            </span>
-          </button>
-        </div>
-        <div class=smol>
-          <label for=hex_upper>Hex Upper</label>
-          <button data-mdc-auto-init=MDCSwitch id=hex_upper class='mdc-switch mdc-switch--unselected' type=button role=switch aria-checked=false>
-            <div class=mdc-switch__track></div>
-            <div class=mdc-switch__handle-track>
-              <div class=mdc-switch__handle>
-                <div class=mdc-switch__shadow>
-                  <div class=mdc-elevation-overlay></div>
-                </div>
-                <div class=mdc-switch__ripple></div>
-                <div class=mdc-switch__icons>
-                  <svg class='mdc-switch__icon mdc-switch__icon--on' viewBox='0 0 24 24'>
-                    <path d='M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z' />
-                  </svg>
-                  <svg class='mdc-switch__icon mdc-switch__icon--off' viewBox='0 0 24 24'>
-                    <path d='M20 13H4v-2h16v2z' />
-                  </svg>
+      <div class=settings-last>
+        <div class='smol settings-last-inner'>
+          <div class=smol>
+            <label for=show_hash>Show Hash</label>
+            <button data-mdc-auto-init=MDCSwitch id=show_hash class='mdc-switch mdc-switch--unselected' type=button role=switch aria-checked=false>
+              <div class=mdc-switch__track></div>
+              <div class=mdc-switch__handle-track>
+                <div class=mdc-switch__handle>
+                  <div class=mdc-switch__shadow>
+                    <div class=mdc-elevation-overlay></div>
+                  </div>
+                  <div class=mdc-switch__ripple></div>
+                  <div class=mdc-switch__icons>
+                    <svg class='mdc-switch__icon mdc-switch__icon--on' viewBox='0 0 24 24'>
+                      <path d='M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z' />
+                    </svg>
+                    <svg class='mdc-switch__icon mdc-switch__icon--off' viewBox='0 0 24 24'>
+                      <path d='M20 13H4v-2h16v2z' />
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-            <span class=mdc-switch__focus-ring-wrapper>
-              <div class=mdc-switch__focus-ring></div>
-            </span>
-          </button>
+              <span class=mdc-switch__focus-ring-wrapper>
+                <div class=mdc-switch__focus-ring></div>
+              </span>
+            </button>
+          </div>
+          <div class=smol>
+            <label for=hex_upper>Hex Upper</label>
+            <button data-mdc-auto-init=MDCSwitch id=hex_upper class='mdc-switch mdc-switch--unselected' type=button role=switch aria-checked=false>
+              <div class=mdc-switch__track></div>
+              <div class=mdc-switch__handle-track>
+                <div class=mdc-switch__handle>
+                  <div class=mdc-switch__shadow>
+                    <div class=mdc-elevation-overlay></div>
+                  </div>
+                  <div class=mdc-switch__ripple></div>
+                  <div class=mdc-switch__icons>
+                    <svg class='mdc-switch__icon mdc-switch__icon--on' viewBox='0 0 24 24'>
+                      <path d='M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z' />
+                    </svg>
+                    <svg class='mdc-switch__icon mdc-switch__icon--off' viewBox='0 0 24 24'>
+                      <path d='M20 13H4v-2h16v2z' />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <span class=mdc-switch__focus-ring-wrapper>
+                <div class=mdc-switch__focus-ring></div>
+              </span>
+            </button>
+          </div>
         </div>
-        <div class='smol mdc-touch-target-wrapper'>
-          <button type=submit value=edit class='mdc-button mdc-button--raised'>
-            <span class=mdc-button__ripple></span>
-            <span class=mdc-button__focus-ring></span>
-            <span class=mdc-button__label>Edit</span>
-          </button>
-        </div>
-        <div class='smol mdc-touch-target-wrapper'>
-          <button type=submit value=cancel class='mdc-button mdc-button--outlined'>
-            <span class=mdc-button__ripple></span>
-            <span class=mdc-button__focus-ring></span>
-            <span class=mdc-button__label>Cancel</span>
-          </button>
+        <div class='smol settings-last-inner'>
+          <div class='smol centerme mdc-touch-target-wrapper'>
+            <button type=submit value=edit class='mdc-button mdc-button--raised'>
+              <span class=mdc-button__ripple></span>
+              <span class=mdc-button__focus-ring></span>
+              <span class=mdc-button__label>Edit</span>
+            </button>
+          </div>
+          <div class='smol mdc-touch-target-wrapper'>
+            <button type=submit value=cancel class='mdc-button mdc-button--outlined'>
+              <span class=mdc-button__ripple></span>
+              <span class=mdc-button__focus-ring></span>
+              <span class=mdc-button__label>Cancel</span>
+            </button>
+          </div>
         </div>
       </div>
     </form>

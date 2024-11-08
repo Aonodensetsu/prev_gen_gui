@@ -167,6 +167,7 @@ export class Tile {
     t(form.desc_left).value = this.desc_left;
     t(form.desc_right).value = this.desc_right;
     form.showPopover();
+    this.viewport.pause = true;
     return this;
   }
 
