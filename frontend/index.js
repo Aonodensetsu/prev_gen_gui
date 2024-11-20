@@ -3,6 +3,7 @@ import { Settings } from './settings.js';
 import { Color } from './color.js';
 import { Tile } from './tile.js';
 import { Palette } from './palette.js';
+import { Picker } from './picker.js';
 const Tween = createjs.Tween;
 
 // initialize Material Design elements
@@ -26,11 +27,6 @@ const viewport = new pixi_viewport.Viewport({
 });
 app.stage.addChild(viewport);
 
-// handle window size changes
-window.addEventListener('resize', () => {
-  viewport.resize(window.innerWidth, window.innerHeight, viewport.worldWidth, viewport.worldHeight);
-});
-
 // enable interactions
 viewport
   .drag()
@@ -40,23 +36,51 @@ viewport
     friction: 0.93  // higher is more slippery
   });
 
-// load font manually before drawing the palette in case it's not loaded yet
-await (new FontFace('Nunito', 'url(nunito.woff2)')).load().then(font => {
-  document.fonts.add(font);
+// wait for font
+await new FontFace('Nunito', 'url(nunito.woff2)').load().then(f => {
+  document.fonts.add(f);
 });
 
 // manage colors
 const p = new Palette({app, viewport});
+
+// update viewport on mobile devices and on page load
+screen.orientation.addEventListener('change', () => {
+  setTimeout(() => {
+    viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
+  }, 100);
+});
+screen.orientation.dispatchEvent(new Event('change'));
+
 
 // viewport manages clicks in world space
 viewport.on('clicked', e => {
   p.click(e.world);
 });
 
-// update viewport on load and on mobile devices
-screen.orientation.addEventListener('change', e => {
-  viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
+/*
+ * Functionality based on color picker from:
+ * https://lch.oklch.com
+ */
+const c = new Picker();
+
+// update canvas sizes on resize and load
+window.addEventListener('resize', () => {
+  viewport.resize(window.innerWidth, window.innerHeight, viewport.worldWidth, viewport.worldHeight);
+  c.canvases().forEach(el => {
+    el.width = el.clientWidth;
+    el.height = el.clientHeight;
+  });
+  c.update(true);
 });
 
-viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
+// tie ranges with value display
+document.querySelectorAll('.range input').forEach(el => {
+  const counterpart = document.querySelector('[name=' + el.name + 'Val]');
+  el.oninput = (e) => counterpart.value = e.target.value;
+  counterpart.oninput = (e) => {
+    el.value = e.target.value;
+    c.update(true);
+  };
+});
 

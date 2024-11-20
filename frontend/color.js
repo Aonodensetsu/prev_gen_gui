@@ -1,4 +1,9 @@
 export class Color {
+  r;
+  g;
+  b;
+  clamped;
+
   static clamp(v, min, max) {
     return Math.max(Math.min(v, max), min);
   }
@@ -30,6 +35,10 @@ export class Color {
     });
   }
 
+  static fromOklch({L, C, h}) {
+    return Color.fromOklab({L: L / 100, a: C * Math.cos(h * Math.PI / 180), b: C * Math.sin(h * Math.PI / 180)});
+  }
+
   static fromVar(val) {
     return Color.fromHex(getComputedStyle(document.body).getPropertyValue(val));
   }
@@ -39,6 +48,7 @@ export class Color {
     this.r = Math.round(Color.clamp(r, 0, 255));
     this.g = Math.round(Color.clamp(g, 0, 255));
     this.b = Math.round(Color.clamp(b, 0, 255));
+    this.clamped = r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0;
   }
 
   get barColor() {
@@ -74,6 +84,15 @@ export class Color {
       L: l * +0.2104542553 + m * +0.7936177850 + s * -0.0040720468,
       a: l * +1.9779984951 + m * -2.4285922050 + s * +0.4505937099,
       b: l * +0.0259040371 + m * +0.7827717662 + s * -0.8086757660
+    };
+  }
+
+  get oklch() {
+    const {L, a, b} = this.oklab;
+    return {
+      L: L * 100,
+      C: Math.sqrt(a * a + b * b),
+      h: (Math.atan2(b, a) * 180 / Math.PI % 360 + 360) % 360
     };
   }
 }

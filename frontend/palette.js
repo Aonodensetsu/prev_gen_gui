@@ -38,31 +38,31 @@ export class Palette {
     this.colPlus = new PIXI.Sprite(Palette._plus);
     this.colPlus.tint = tint;
     this.colPlus.interactive = true;
-    this.colPlus.on('pointerdown', this.addColumn.bind(this));
+    this.colPlus.on('pointerdown', () => this.addColumn());
     viewport.addChild(this.colPlus);
     this.rowPlus = new PIXI.Sprite(Palette._plus);
     this.rowPlus.tint = tint;
     this.rowPlus.interactive = true;
-    this.rowPlus.on('pointerdown', this.addRow.bind(this));
+    this.rowPlus.on('pointerdown', () => this.addRow());
     viewport.addChild(this.rowPlus);
 
     if (!Palette._minus) Palette._minus = PIXI.Texture.from('minus.png');
     this.colMinus = new PIXI.Sprite(Palette._minus);
     this.colMinus.tint = tint;
     this.colMinus.interactive = true;
-    this.colMinus.on('pointerdown', this.deleteColumn.bind(this));
+    this.colMinus.on('pointerdown', () => this.deleteColumn());
     viewport.addChild(this.colMinus);
     this.rowMinus = new PIXI.Sprite(Palette._minus);
     this.rowMinus.tint = tint;
     this.rowMinus.interactive = true;
-    this.rowMinus.on('pointerdown', this.deleteRow.bind(this));
+    this.rowMinus.on('pointerdown', () => this.deleteRow());
     viewport.addChild(this.rowMinus);
 
     if (!Palette._settings) Palette._settings = PIXI.Texture.from('settings.png');
     this.settingsBtn = new PIXI.Sprite(Palette._settings);
     this.settingsBtn.tint = tint;
     this.settingsBtn.interactive = true;
-    this.settingsBtn.on('pointerdown', this.clickSettings.bind(this));
+    this.settingsBtn.on('pointerdown', () => this.clickSettings());
     this.settingsBtn.anchor.set(0, 1);
     this.settingsBtn.position.set(0, -20);
     viewport.addChild(this.settingsBtn);
@@ -71,7 +71,7 @@ export class Palette {
     this.trashBtn = new PIXI.Sprite(Palette._trash);
     this.trashBtn.tint = tint;
     this.trashBtn.interactive = true;
-    this.trashBtn.on('pointerdown', this.empty.bind(this));
+    this.trashBtn.on('pointerdown', () => this.empty());
     this.trashBtn.anchor.set(0, 1);
     this.trashBtn.position.set(120, -20);
     viewport.addChild(this.trashBtn);
@@ -80,15 +80,15 @@ export class Palette {
     this.resetBtn = new PIXI.Sprite(Palette._reset);
     this.resetBtn.tint = tint;
     this.resetBtn.interactive = true;
-    this.resetBtn.on('pointerdown', this.defaultTiles.bind(this));
+    this.resetBtn.on('pointerdown', () => this.defaultTiles());
     this.resetBtn.anchor.set(0, 1);
     this.resetBtn.position.set(240, -20);
     viewport.addChild(this.resetBtn);
 
     this.fill({row: 0, column: 0}).defaultTiles();
 
-    document.querySelector('#edittile').addEventListener('submit', this.editTile.bind(this));
-    document.querySelector('#editsettings').addEventListener('submit', this.editSettings.bind(this));
+    document.querySelector('#edittile').addEventListener('submit', (e) => this.editTile(e));
+    document.querySelector('#editsettings').addEventListener('submit', (e) => this.editSettings(e));
   }
 
   click({x, y}) {
@@ -138,7 +138,7 @@ export class Palette {
       this.tiles[pos[0]][pos[1]].update();
     }
     else if (e.submitter.value === 'edit') {
-      const col = e.target.hex.value ? Color.fromHex(e.target.hex.value) : null;
+      const col = Color.fromOklch({L: e.target.lightness.value, C: e.target.chroma.value, h: e.target.hue.value});
       this.tiles[pos[0]][pos[1]].update(col, {name: e.target.name.value, desc_left: e.target.desc_left.value, desc_right: e.target.desc_right.value});
     }
     e.target.hidePopover();
