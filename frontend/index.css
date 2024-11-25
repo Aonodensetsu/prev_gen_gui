@@ -126,6 +126,10 @@ input[type=range][orient=vertical]::-ms-thumb {
   clip-path: polygon(100% 0, 100% 100%, 0% 50%);
 }
 
+.oob::-moz-range-thumb {
+  background: var(--mdc-theme-on-error);
+}
+
 .colorpicker {
   display: grid;
   grid-template-columns: repeat(3, 60px);

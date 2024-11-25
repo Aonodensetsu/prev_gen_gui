@@ -52,12 +52,27 @@ export class Picker {
     }
   }
 
-  nudge(col, label, value) {
+  nudge({L, C, h}, label, value) {
+    let nudged;
     switch (label) {
-      case 'l': return Color.fromOklch({L: col.oklch.L + value, C: col.oklch.C, h: col.oklch.h});
-      case 'c': return Color.fromOklch({L: col.oklch.L, C: col.oklch.C + value, h: col.oklch.h});
-      case 'h': return Color.fromOklch({L: col.oklch.L, C: col.oklch.C, h: col.oklch.h + value});
+      case 'l':
+        nudged = {L: L + value, C, h};
+        break;
+      case 'c':
+        nudged = {L, C: C + value, h};
+        break;
+      case 'h':
+        nudged = {L, C, h: h + value};
+        break;
     }
+    return Color.fromOklch(nudged);
+  }
+
+  setOob(state) {
+    this.canvases().map(c => this.partner(c)).forEach(r => {
+      if (state) r.classList.add('oob');
+      else r.classList.remove('oob');
+    });
   }
 
   update(force=false) {
@@ -67,19 +82,29 @@ export class Picker {
     }
     this.lastUpdate = Date.now();
 
-    const real = Color.fromOklch({L: this.lR.value, C: this.cR.value, h: this.hR.value})
+    const real = {L: parseFloat(this.lR.value), C: parseFloat(this.cR.value), h: parseFloat(this.hR.value)};
     const bg = Color.fromVar('--mdc-theme-surface');
+    const fail = Color.fromVar('--mdc-theme-on-error');
 
     this.canvases().forEach(el => {
       const partner = this.partner(el);
       const ctx = el.getContext('2d');
 
-      for (let i = 0; i < el.height; i++) {
+      if (Color.fromOklch(real).clamped) {
+        partner.classList.add('oob');
+      } else {
+        partner.classList.remove('oob');
+      }
+
+      for (let i = 0; i <= el.height; i++) {
         const percent = parseFloat(partner.max) * i / el.height;
         const col = this.nudge(real, partner.name[0], percent - partner.value);
-        if (col.clamped) ctx.fillStyle = bg.hex;
-        else ctx.fillStyle = `oklch(${col.oklch.L}% ${col.oklch.C} ${col.oklch.h})`;
+        ctx.fillStyle = `oklch(${col.oklch.L}% ${col.oklch.C} ${col.oklch.h})`;
         ctx.fillRect(0, el.height - i, el.width, 1);
+        if (col.clamped) {
+          ctx.fillStyle = fail.hex;
+          ctx.fillRect(0, el.height - i, 4, 1);
+        }
       }
 
       const letter = partner.name[0];

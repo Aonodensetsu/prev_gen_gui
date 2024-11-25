@@ -45,9 +45,9 @@ export class Color {
 
   // static fromRGB
   constructor({r, g, b}) {
-    this.r = Math.round(Color.clamp(r, 0, 255));
-    this.g = Math.round(Color.clamp(g, 0, 255));
-    this.b = Math.round(Color.clamp(b, 0, 255));
+    this.r = Color.clamp(r, 0, 255);
+    this.g = Color.clamp(g, 0, 255);
+    this.b = Color.clamp(b, 0, 255);
     this.clamped = r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0;
   }
 
@@ -58,15 +58,16 @@ export class Color {
 
   get textColor() {
     const {L, a, b} = this.oklab;
-    return Color.fromOklab(L <= 0.483 ? {L: L * 0.9 + 0.3, a, b} : {L: L * 0.75 - 0.15, a, b});
+    const Ln = L <= 0.483 ? L * 0.9 + 0.3 : L * 0.75 - 0.15;
+    return Color.fromOklab({L: Ln, a, b});
   }
 
   get rgb() {
-    return {r: this.r, g: this.g, b: this.b};
+    return {r: Math.round(this.r), g: Math.round(this.g), b: Math.round(this.b)};
   }
 
   get hexNum() {
-    return (this.r << 16) + (this.g << 8) + this.b;
+    return (Math.round(this.r) << 16) + (Math.round(this.g) << 8) + Math.round(this.b);
   }
 
   get hex() {
