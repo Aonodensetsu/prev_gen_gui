@@ -73,6 +73,7 @@ export class Picker {
       if (state) r.classList.add('oob');
       else r.classList.remove('oob');
     });
+    return this;
   }
 
   update(force=false) {
@@ -113,6 +114,7 @@ export class Picker {
       ctx.font = '20px Nunito';
       ctx.fillText(letter, 5, el.height - 5, el.width - 10);
     });
+    return this;
   }
 
   drag(e) {
@@ -122,6 +124,7 @@ export class Picker {
     const y = e instanceof TouchEvent ? e.touches[0].clientY - e.target.getBoundingClientRect().top : e.layerY;
     range.value = (1 - y / e.target.height) * parseFloat(range.max);
     range.dispatchEvent(new Event('input'));
+    return this;
   }
 }
 

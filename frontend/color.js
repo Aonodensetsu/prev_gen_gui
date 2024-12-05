@@ -74,7 +74,7 @@ export class Color {
     return '#' + this.hexNum.toString(16);
   }
 
- get oklab() {
+  get oklab() {
     const r = Color.gammaToLinear(this.r / 255);
     const g = Color.gammaToLinear(this.g / 255);
     const b = Color.gammaToLinear(this.b / 255);

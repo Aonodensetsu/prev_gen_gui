@@ -1,5 +1,19 @@
 import { Color } from './color.js';
 
+class SaveableTile {
+  color;
+  name;
+  desc_left;
+  desc_right;
+
+  constructor(tile) {
+    this.color = tile.color?.hex || null;
+    this.name = tile.name;
+    this.desc_left = tile.desc_left;
+    this.desc_right = tile.desc_right;
+  }
+}
+
 export class Tile {
   static _emptyTex;
   el;
@@ -84,7 +98,7 @@ export class Tile {
       const n = new PIXI.Text(this.name, {
         fontFamily: 'Nunito',
         fontSize: this.settings.name_size,
-        fontWeight: 600,
+        fontWeight: 500,
         fill: this.color.textColor.hexNum,
         align: 'center'
       });
@@ -117,7 +131,7 @@ export class Tile {
       const h = new PIXI.Text(this.settings.show_hash ? hc : hc.replace('#', ''), {
         fontFamily: 'Nunito',
         fontSize: this.settings.hex_size_nameless,
-        fontWeight: 600,
+        fontWeight: 500,
         fill: this.color.textColor.hexNum,
         align: 'center'
       });
@@ -198,6 +212,10 @@ export class Tile {
     this.row = null;
     this.column = null;
     return this;
+  }
+
+  save() {
+    return new SaveableTile(this);
   }
 }
 

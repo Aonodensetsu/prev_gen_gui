@@ -1,0 +1,103 @@
+# https://editor-next.swagger.io
+# https://swagger.io/specification/v3
+openapi: 3.0.3
+info:
+  title: Preview Generator API
+  description: |
+    A simple interface with the prev_gen library for use within prev_gen_gui.
+  termsOfService: https://prevgen.aonodensetsu.me/TermsOfService.html
+  contact:
+    name: Remigiusz Dończyk
+    email: remok99999@gmail.com
+  license:
+    name: GNU General Public License v3
+    url: https://prevgen.aonodensetsu.me/License.html
+  version: 1.0.0
+externalDocs:
+  description: Backend wiki
+  url: https://github.com/Aonodensetsu/prev_gen/blob/main/WIKI.md
+servers:
+- url: /api/v1
+  description: The official app service
+paths:
+  /save:
+    post:
+      summary: Generate a PNG image from the GUI
+      x-openapi-router-controller: server.controller
+      operationId: POST_save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                settings:
+                  type: object
+                  properties:
+                    grid_height:
+                      type: integer
+                      default: 168
+                    grid_width:
+                      type: integer
+                      default: 224
+                    bar_height:
+                      type: integer
+                      default: 10
+                    name_offset:
+                      type: integer
+                      default: -10
+                    hex_offset:
+                      type: integer
+                      default: 35
+                    hex_offset_nameless:
+                      type: integer
+                      default: 0
+                    desc_offset_x:
+                      type: integer
+                      default: 15
+                    desc_offset_y:
+                      type: integer
+                      default: 20
+                    name_size:
+                      type: integer
+                      default: 40
+                    hex_size:
+                      type: integer
+                      default: 26
+                    hex_size_nameless:
+                      type: integer
+                      default: 34
+                    desc_size:
+                      type: integer
+                      default: 26
+                    show_hash:
+                      type: boolean
+                      default: false
+                    hex_upper:
+                      type: boolean
+                      default: true
+                palette:
+                  type: array
+                  items:
+                    title: row
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        color:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                        desc_left:
+                          type: string
+                        desc_right:
+                          type: string
+      responses:
+        200:
+          description: succeeded
+          content:
+            image/png:
+              example: no examples
+        400:
+          description: could not parse
+

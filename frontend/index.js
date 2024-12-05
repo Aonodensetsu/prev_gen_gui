@@ -4,7 +4,6 @@ import { Color } from './color.js';
 import { Tile } from './tile.js';
 import { Palette } from './palette.js';
 import { Picker } from './picker.js';
-const Tween = createjs.Tween;
 
 // initialize Material Design elements
 mdc.autoInit();
@@ -59,7 +58,7 @@ viewport.on('clicked', e => {
 });
 
 /*
- * Functionality based on color picker from:
+ * Appearance based on color picker from:
  * https://lch.oklch.com
  */
 const c = new Picker();
