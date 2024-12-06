@@ -1,19 +1,5 @@
 import { Color } from './color.js';
 
-class SaveableTile {
-  color;
-  name;
-  desc_left;
-  desc_right;
-
-  constructor(tile) {
-    this.color = tile.color?.hex || null;
-    this.name = tile.name;
-    this.desc_left = tile.desc_left;
-    this.desc_right = tile.desc_right;
-  }
-}
-
 export class Tile {
   static _emptyTex;
   el;
@@ -59,13 +45,16 @@ export class Tile {
     return this;
   }
 
+  reposition() {
+    this.el.position.set(this.column * this.settings.grid_width, this.row * this.settings.grid_height);
+    return this;
+  }
+
   redraw() {
     if (this.settings.grid_width != Tile._emptyTex.width || this.settings.grid_height != Tile._emptyTex.height) {
       this.redrawStatic();
     }
-    this.el.position.set(this.column * this.settings.grid_width, this.row * this.settings.grid_height);
-    this.update(this.color, {name: this.name, desc_left: this.desc_left, desc_right: this.desc_right});
-    return this;
+    return this.reposition().update(this.color, {name: this.name, desc_left: this.desc_left, desc_right: this.desc_right});
   }
 
   update(color = null, {name, desc_left, desc_right} = {name: '', desc_left: '', desc_right: ''}) {
@@ -212,10 +201,6 @@ export class Tile {
     this.row = null;
     this.column = null;
     return this;
-  }
-
-  save() {
-    return new SaveableTile(this);
   }
 }
 

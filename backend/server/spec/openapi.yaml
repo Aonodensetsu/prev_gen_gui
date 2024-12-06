@@ -29,75 +29,130 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                settings:
-                  type: object
-                  properties:
-                    grid_height:
-                      type: integer
-                      default: 168
-                    grid_width:
-                      type: integer
-                      default: 224
-                    bar_height:
-                      type: integer
-                      default: 10
-                    name_offset:
-                      type: integer
-                      default: -10
-                    hex_offset:
-                      type: integer
-                      default: 35
-                    hex_offset_nameless:
-                      type: integer
-                      default: 0
-                    desc_offset_x:
-                      type: integer
-                      default: 15
-                    desc_offset_y:
-                      type: integer
-                      default: 20
-                    name_size:
-                      type: integer
-                      default: 40
-                    hex_size:
-                      type: integer
-                      default: 26
-                    hex_size_nameless:
-                      type: integer
-                      default: 34
-                    desc_size:
-                      type: integer
-                      default: 26
-                    show_hash:
-                      type: boolean
-                      default: false
-                    hex_upper:
-                      type: boolean
-                      default: true
-                palette:
-                  type: array
-                  items:
-                    title: row
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        color:
-                          type: string
-                          nullable: true
-                        name:
-                          type: string
-                        desc_left:
-                          type: string
-                        desc_right:
-                          type: string
+              $ref: '#/components/schemas/palette'
+            examples:
+              config:
+                $ref: '#/components/examples/config'
       responses:
         200:
           description: succeeded
           content:
             image/png:
-              example: no examples
+              schema:
+                $ref: '#/components/schemas/image'
+              examples:
+                image:
+                  $ref: '#/components/examples/image'
         400:
           description: could not parse
+  /load:
+    post:
+      summary: Load a PNG into GUI
+      x-openapi-router-controller: server.controller
+      operationId: POST_load
+      requestBody:
+        content:
+          image/png:
+            schema:
+              $ref: '#/components/schemas/image'
+            examples:
+              image:
+                $ref: '#/components/examples/image'
+      responses:
+        200:
+          description: succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/palette'
+              examples:
+                config:
+                  $ref: '#/components/examples/config'
+        400:
+          description: could not parse
+components:
+  examples:
+    config:
+      summary: example config
+      value:
+        palette:
+        - - color: '#b59ae4'
+            name: name
+            desc_left: left
+            desc_right: right
+    image:
+      description: "![alt](https://prevgen.aonodensetsu.me/preview.png)"
+      value: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=
+  schemas:
+    image:
+      type: string
+      format: binary
+    palette:
+      properties:
+        settings:
+          $ref: '#/components/schemas/settings'
+        palette:
+          $ref: '#/components/schemas/colors'
+    settings:
+      type: object
+      properties:
+        grid_height:
+          type: integer
+          default: 168
+        grid_width:
+          type: integer
+          default: 224
+        bar_height:
+          type: integer
+          default: 10
+        name_offset:
+          type: integer
+          default: -10
+        hex_offset:
+          type: integer
+          default: 35
+        hex_offset_nameless:
+          type: integer
+          default: 0
+        desc_offset_x:
+          type: integer
+          default: 15
+        desc_offset_y:
+          type: integer
+          default: 20
+        name_size:
+          type: integer
+          default: 40
+        hex_size:
+          type: integer
+          default: 26
+        hex_size_nameless:
+          type: integer
+          default: 34
+        desc_size:
+          type: integer
+          default: 26
+        show_hash:
+          type: boolean
+          default: false
+        hex_upper:
+          type: boolean
+          default: true
+    colors:
+      type: array
+      items:
+        title: row
+        type: array
+        items:
+          title: tile
+          type: object
+          properties:
+            color:
+              type: string
+            name:
+              type: string
+            desc_left:
+              type: string
+            desc_right:
+              type: string
 

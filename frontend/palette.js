@@ -20,6 +20,7 @@ export class Palette {
   settingsBtn;
   resetBtn;
   saveBtn;
+  loadBtn;
   // values
   tiles = [[]]; // 2d list of tiles, rows indexed first
   rows = 1;
@@ -104,6 +105,16 @@ export class Palette {
     saveBtn.position.set(360, -20);
     viewport.addChild(saveBtn);
     this.saveBtn = saveBtn;
+
+    if (!Palette._load) Palette._load = PIXI.Texture.from('load.png');
+    let loadBtn = new PIXI.Sprite(Palette._load);
+    loadBtn.tint = tint;
+    loadBtn.interactive = true;
+    loadBtn.on('pointerdown', () => this.load());
+    loadBtn.anchor.set(0, 1);
+    loadBtn.position.set(480, -20);
+    viewport.addChild(loadBtn);
+    this.loadBtn = loadBtn;
 
     this.fill({row: 0, column: 0}).defaultTiles();
 
@@ -310,6 +321,9 @@ export class Palette {
   save() {
     const settings = structuredClone(this.settings);
     delete settings.anim_time;
+    const palette = this.tiles.map(r => r.map(t => {
+        return {color: t.color?.hex || '#0000', name: t.name, desc_left: t.desc_left, desc_right: t.desc_right};
+    }));
     fetch('/api/v1/save', {
       method: 'POST',
       headers: {
@@ -317,8 +331,8 @@ export class Palette {
         'Accept': 'image/png'
       },
       body: JSON.stringify({
-        settings: settings,
-        palette: this.tiles.map(r => r.map(t => t.save()))
+        settings,
+        palette
       })
     })
       .then(r => {
@@ -332,6 +346,39 @@ export class Palette {
         el.click();
       })
       .catch(e => console.log(e.message));
+  }
+
+  load() {
+    const el = document.createElement('input');
+    el.type = 'file';
+    el.onchange = e => {
+      fetch('/api/v1/load', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: e.target.files[0]
+      })
+        .then(r => {
+          if (r.ok) return r.json();
+          throw new Error(r.status);
+        })
+        .then(j => {
+          if ('settings' in j) this.settings.update(...j.settings);
+          else this.settings.update();
+          this.moveHandles();
+          this.tiles[0][0].redrawStatic();
+          while (this.rows > j['palette'].length) this.deleteRow();
+          while (this.columns > Math.max(...j['palette'].map(r => r.length))) this.deleteColumn();
+          j['palette'].forEach((r, i) => r.forEach((t, k) => {
+            if (Object.keys(t).length == 0) this.fill({row: i, column: k});
+            else this.fill({row: i, column: k}, Color.fromHex(t.color), {name: t.name, desc_left: t.desc_left, desc_right: t.desc_right});
+            this.tiles[i][k].reposition();
+          }));
+        })
+        .catch(e => console.log(e.message));
+    };
+    el.click();
   }
 }
 
