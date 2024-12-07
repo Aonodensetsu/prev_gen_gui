@@ -1,11 +1,11 @@
 export class Settings {
   anim_time = 0.1;
 
-  constructor(...args) {
-    this.update(...args);
+  constructor(args) {
+    this.update(args);
   }
 
-  update(
+  update({
     grid_height = 168,
     grid_width = 224,
     bar_height = 10,
@@ -20,7 +20,7 @@ export class Settings {
     desc_size = 26,
     show_hash = false,
     hex_upper = true
-  ) {
+  }) {
     this.grid_height = grid_height;
     this.grid_width = grid_width;
     this.bar_height = bar_height;

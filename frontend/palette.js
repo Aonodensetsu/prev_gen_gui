@@ -26,7 +26,7 @@ export class Palette {
   rows = 1;
   columns = 1;
 
-  constructor({app, viewport, settings = new Settings()}) {
+  constructor({app, viewport, settings = new Settings({})}) {
     if (Palette._self) return Palette._self;
     Palette._self = this;
 
@@ -364,8 +364,8 @@ export class Palette {
           throw new Error(r.status);
         })
         .then(j => {
-          if ('settings' in j) this.settings.update(...j.settings);
-          else this.settings.update();
+          if ('settings' in j) this.settings.update(j.settings);
+          else this.settings.update({});
           this.moveHandles();
           this.tiles[0][0].redrawStatic();
           while (this.rows > j['palette'].length) this.deleteRow();
