@@ -21,7 +21,6 @@
     <link rel=manifest href=manifest.json>
     <link rel=stylesheet href=material-components-web.css>
     <link rel=stylesheet href=index.css>
-    <script src=pleaserotate.js></script>
     <script defer src=material-components-web.js></script>
     <script defer src=pixi.js></script>
     <script defer src=pixi-unsafeeval.js></script>
@@ -34,6 +33,7 @@
       <input hidden name=cause>
       <div class='smol values'>
         <div class=colorpicker>
+          <div id=preview></div>
           <div class=range>
             <canvas></canvas>
             <input type=range orient=vertical min=0 max=100 step=0.01 name=lightness>
@@ -313,6 +313,36 @@
             </button>
           </div>
         </div>
+      </div>
+    </form>
+    <form popover=manual id=info>
+      <p class=wrap>
+      The color picker uses the OkLCh color space.
+      The OkLCh color space is designed for humans to interact with color.
+      Its special property is color changes matched to human perception.
+      It's divided into lightness, chroma (saturation), and hue.
+      The special property allows the change in one value to not affect the others according to (subjective) human perception.
+      </p>
+      <p class='wrap chin'>
+      This allows the picker to be used by feel, rather than calculating exact values.
+      The space is bigger than RGB, so some combinations of values are mapped to a nearby RGB color, those are marked with a dark red bar in the picker.
+      </p>
+      <p><img src=info.png></img>Open this information page</p>
+      <p><img src=settings.png></img>Change palette settings</p>
+      <p><img src=trash.png></img>Clean the canvas, emptying the palette</p>
+      <p><img src=reset.png></img>Reset the palette to the default showcase</p>
+      <p><img src=save.png></img>Save the palette to a (special) PNG file</p>
+      <p class=chin><img src=load.png></img>Load a palette from a (special) PNG file</p>
+      <p><a href=TermsOfService.html>Terms of Service</a> and <a href=License.html>License</a>.</p>
+      <p>Repositories for the prev_gen <a href=//github.com/Aonodensetsu/prev_gen>library</a> and <a href=//github.com/Aonodensetsu/prev_gen_gui>GUI</a>.</p>
+      <p><a href=api/v1/ui>API documentation</a>.</p>
+      <p>Credits for icons to Yogi Aprelliyanto,<br>Ilham Fitrotul Hayat, Rahul Kaklotar, Freepik.</p>
+      <div class='smol mdc-touch-target-wrapper'>
+        <button type=submit class='mdc-button mdc-button--outlined'>
+          <span class=mdc-button__ripple></span>
+          <span class=mdc-button__focus-ring></span>
+          <span class=mdc-button__label>Close</span>
+        </button>
       </div>
     </form>
   </body>
