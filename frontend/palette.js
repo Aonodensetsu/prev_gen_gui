@@ -283,6 +283,8 @@ export class Palette {
   defaultTiles() {
     while (this.rows > 4) this.deleteRow();
     while (this.columns > 8) this.deleteColumn();
+    this.settings.update({});
+    this.tiles.forEach(r => r.forEach(t => t.reposition()));
     return this.fill({row: 0, column: 0}, Color.fromHex('282828'), {name: 'bg', desc_left: '235', desc_right: '0'})
         .fill({row: 0, column: 1}, Color.fromHex('cc241d'), {name: 'red', desc_left: '124', desc_right: '1'})
         .fill({row: 0, column: 2}, Color.fromHex('98971a'), {name: 'green', desc_left: '106', desc_right: '2'})
