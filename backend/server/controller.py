@@ -2,9 +2,9 @@ from json import dumps
 from io import BytesIO
 
 from prev_gen import Config, Previewer, Reverser
+from PIL import Image, UnidentifiedImageError
 from PIL.PngImagePlugin import PngInfo
 from flask import send_file
-from PIL import Image, UnidentifiedImageError
 
 
 def POST_save(body=None) -> BytesIO:

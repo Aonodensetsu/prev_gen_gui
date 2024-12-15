@@ -35,7 +35,7 @@ viewport
     friction: 0.93  // higher is more slippery
   });
 
-// wait for font
+// load font
 await new FontFace('Nunito', 'url(nunito.woff2)').load().then(f => {
   document.fonts.add(f);
 });
@@ -45,12 +45,11 @@ const p = new Palette({app, viewport});
 
 // update viewport on mobile devices and on page load
 screen.orientation.addEventListener('change', () => {
-  setTimeout(() => {
-    viewport.ensureVisible(-20, -140, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 160, true);
-  }, 100);
+  viewport.top = -280;
+  viewport.left = -20;
+  viewport.fit(false, p.columns * p.settings.grid_width + 160, p.rows * p.settings.grid_height + 420);
 });
 screen.orientation.dispatchEvent(new Event('change'));
-
 
 // viewport manages clicks in world space
 viewport.on('clicked', e => {
@@ -63,7 +62,7 @@ viewport.on('clicked', e => {
  */
 const c = new Picker();
 
-// update canvas sizes on resize and load
+// update canvas sizes on resize
 window.addEventListener('resize', () => {
   viewport.resize(window.innerWidth, window.innerHeight, viewport.worldWidth, viewport.worldHeight);
   c.canvases().forEach(el => {
@@ -71,6 +70,7 @@ window.addEventListener('resize', () => {
     el.height = el.clientHeight;
   });
   c.update(true);
+  screen.orientation.dispatchEvent(new Event('change'));
 });
 
 // tie ranges with value display

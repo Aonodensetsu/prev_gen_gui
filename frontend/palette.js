@@ -11,6 +11,9 @@ export class Palette {
   static _trash;
   static _settings;
   static _reset;
+  static _save;
+  static _load;
+  static _info;
   // buttons
   colPlus;
   colMinus;
@@ -21,7 +24,8 @@ export class Palette {
   resetBtn;
   saveBtn;
   loadBtn;
-  // values
+  infoBtn;
+  // attributes
   tiles = [[]]; // 2d list of tiles, rows indexed first
   rows = 1;
   columns = 1;
@@ -76,6 +80,16 @@ export class Palette {
     viewport.addChild(settingsBtn);
     this.settingsBtn = settingsBtn;
 
+    if (!Palette._info) Palette._info = PIXI.Texture.from('info.png');
+    let infoBtn = new PIXI.Sprite(Palette._info);
+    infoBtn.tint = tint;
+    infoBtn.interactive = true;
+    infoBtn.on('pointerdown', () => this.showInfo());
+    infoBtn.anchor.set(0, 1);
+    infoBtn.position.set(0, -140);
+    viewport.addChild(infoBtn);
+    this.infoBtn = infoBtn;
+
     if (!Palette._trash) Palette._trash = PIXI.Texture.from('trash.png');
     let trashBtn = new PIXI.Sprite(Palette._trash);
     trashBtn.tint = tint;
@@ -92,7 +106,7 @@ export class Palette {
     resetBtn.interactive = true;
     resetBtn.on('pointerdown', () => this.defaultTiles());
     resetBtn.anchor.set(0, 1);
-    resetBtn.position.set(240, -20);
+    resetBtn.position.set(120, -140);
     viewport.addChild(resetBtn);
     this.resetBtn = resetBtn;
 
@@ -102,7 +116,7 @@ export class Palette {
     saveBtn.interactive = true;
     saveBtn.on('pointerdown', () => this.save());
     saveBtn.anchor.set(0, 1);
-    saveBtn.position.set(360, -20);
+    saveBtn.position.set(240, -20);
     viewport.addChild(saveBtn);
     this.saveBtn = saveBtn;
 
@@ -112,7 +126,7 @@ export class Palette {
     loadBtn.interactive = true;
     loadBtn.on('pointerdown', () => this.load());
     loadBtn.anchor.set(0, 1);
-    loadBtn.position.set(480, -20);
+    loadBtn.position.set(240, -140);
     viewport.addChild(loadBtn);
     this.loadBtn = loadBtn;
 
@@ -120,6 +134,7 @@ export class Palette {
 
     document.querySelector('#edittile').addEventListener('submit', (e) => this.editTile(e));
     document.querySelector('#editsettings').addEventListener('submit', (e) => this.editSettings(e));
+    document.querySelector('#info').addEventListener('submit', (e) => this.hideInfo(e));
   }
 
   moveHandles() {
@@ -381,6 +396,17 @@ export class Palette {
         .catch(e => console.log(e.message));
     };
     el.click();
+  }
+
+  showInfo() {
+    this.viewport.pause = true;
+    document.querySelector('#info').showPopover();
+  }
+
+  hideInfo(e) {
+    e.preventDefault();
+    e.target.hidePopover();
+    this.viewport.pause = false;
   }
 }
 

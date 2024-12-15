@@ -8,6 +8,7 @@ export class Picker {
   // C - canvas element
   lR; cR; hR;
   lC; cC; hC;
+  preview;
 
   dragging = false;
   lastUpdate = 0;
@@ -42,6 +43,7 @@ export class Picker {
       });
       this.update();
     });
+    this.preview = document.querySelector('#preview');
   }
 
   partner(el) {
@@ -84,6 +86,7 @@ export class Picker {
     this.lastUpdate = Date.now();
 
     const real = {L: parseFloat(this.lR.value), C: parseFloat(this.cR.value), h: parseFloat(this.hR.value)};
+    this.preview.style.background = `oklch(${real.L}% ${real.C} ${real.h})`;
     const bg = Color.fromVar('--mdc-theme-surface');
     const fail = Color.fromVar('--mdc-theme-on-error');
 
